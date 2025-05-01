@@ -31,6 +31,7 @@ public class Main extends Application {
         Button addEntryButton = new Button("Add Entry");
         addEntryButton.setOnAction(event -> showAddEntryWindow());
         Button viewEntryButton = new Button("View All Entries");
+        viewEntryButton.setOnAction(event -> showAllEntriesWindow());
 
         // TODO: Add action handlers for buttons later
 
