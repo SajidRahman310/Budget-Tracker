@@ -10,6 +10,8 @@ public class Main extends Application {
     private BudgetManager budgetManager = new BudgetManager();
 
     @Override
+
+    //home route
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Budget Tracker");
 
@@ -43,7 +45,7 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-
+    //add entry route
     private void showAddEntryWindow() {
         Stage addStage = new Stage();
         addStage.setTitle("Add New Entry");
@@ -95,6 +97,43 @@ public class Main extends Application {
         Scene scene = new Scene(layout, 300, 300);
         addStage.setScene(scene);
         addStage.show();
+    }
+
+    //view entries route
+    private void showAllEntriesWindow() {
+        Stage viewStage = new Stage();
+        viewStage.setTitle("All Entries");
+
+        javafx.scene.control.TableView<Entry> table = new javafx.scene.control.TableView<>();
+
+        // Columns
+        javafx.scene.control.TableColumn<Entry, Double> amountCol = new javafx.scene.control.TableColumn<>("Amount");
+        amountCol.setCellValueFactory(new javafx.scene.control.cell.PropertyValueFactory<>("amount"));
+
+        javafx.scene.control.TableColumn<Entry, String> dateCol = new javafx.scene.control.TableColumn<>("Date");
+        dateCol.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getDate().toString()));
+
+        javafx.scene.control.TableColumn<Entry, String> categoryCol = new javafx.scene.control.TableColumn<>("Category");
+        categoryCol.setCellValueFactory(new javafx.scene.control.cell.PropertyValueFactory<>("category"));
+
+        javafx.scene.control.TableColumn<Entry, String> descriptionCol = new javafx.scene.control.TableColumn<>("Description");
+        descriptionCol.setCellValueFactory(new javafx.scene.control.cell.PropertyValueFactory<>("description"));
+
+        javafx.scene.control.TableColumn<Entry, String> typeCol = new javafx.scene.control.TableColumn<>("Type");
+        typeCol.setCellValueFactory(new javafx.scene.control.cell.PropertyValueFactory<>("type"));
+
+        table.getColumns().addAll(amountCol, dateCol, categoryCol, descriptionCol, typeCol);
+
+        // Load data into the table
+        table.getItems().addAll(budgetManager.getAllEntries());
+
+        VBox layout = new VBox(10);
+        layout.setStyle("-fx-padding: 20;");
+        layout.getChildren().add(table);
+
+        Scene scene = new Scene(layout, 600, 400);
+        viewStage.setScene(scene);
+        viewStage.show();
     }
 
     public static void main(String[] args) {
