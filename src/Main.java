@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
     private BudgetManager budgetManager = new BudgetManager();
+    private Label summaryLabel;
 
     @Override
 
@@ -21,10 +22,10 @@ public class Main extends Application {
 
         //Summary label
         Summary summary = budgetManager.calculateSummary();
-        Label summaryLabel = new Label(
-                 "Total Income: $" + summary.getTotalIncome() +
-                    " | Total Expense: $" + summary.getTotalExpense() +
-                    " | Balance: $" + summary.getBalance()
+        summaryLabel = new Label(
+         "Total Income: $" + summary.getTotalIncome() +
+            " | Total Expense: $" + summary.getTotalExpense() +
+            " | Balance: $" + summary.getBalance()
         );
 
         //Buttons
@@ -85,6 +86,7 @@ public class Main extends Application {
 
                 Entry newEntry = new Entry(amount, date, category, description, type);
                 budgetManager.addEntry(newEntry);
+                refreshSummary();
                 addStage.close();
             } catch (Exception ex) {
                 System.out.println("Error adding entry: " + ex.getMessage());
@@ -136,6 +138,17 @@ public class Main extends Application {
         viewStage.setScene(scene);
         viewStage.show();
     }
+
+
+    private void refreshSummary() {
+        Summary summary = budgetManager.calculateSummary();
+        summaryLabel.setText(
+                "Total Income: $" + summary.getTotalIncome() +
+                        " | Total Expense: $" + summary.getTotalExpense() +
+                        " | Balance: $" + summary.getBalance()
+        );
+    }
+
 
     public static void main(String[] args) {
         launch(args);
