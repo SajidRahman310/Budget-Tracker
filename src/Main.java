@@ -130,9 +130,32 @@ public class Main extends Application {
         // Load data into the table
         table.getItems().addAll(budgetManager.getAllEntries());
 
+        // Delete Button
+        Button deleteBtn = new Button("Delete Selected Entry");
+        deleteBtn.setOnAction(e -> {
+            Entry selected = table.getSelectionModel().getSelectedItem();
+            if (selected != null) {
+                budgetManager.getAllEntries().remove(selected);
+                table.getItems().remove(selected);
+                refreshSummary();
+            }
+        });
+
+        // Edit Button (for simplicity, we'll just delete and let the user re-add)
+        Button editBtn = new Button("Edit Selected Entry");
+        editBtn.setOnAction(e -> {
+            Entry selected = table.getSelectionModel().getSelectedItem();
+            if (selected != null) {
+                budgetManager.getAllEntries().remove(selected);
+                table.getItems().remove(selected);
+                refreshSummary();
+                showAddEntryWindow(); // Just re-use the Add Entry form for now
+            }
+        });
+
         VBox layout = new VBox(10);
         layout.setStyle("-fx-padding: 20;");
-        layout.getChildren().add(table);
+        layout.getChildren().addAll(table, deleteBtn, editBtn);
 
         Scene scene = new Scene(layout, 600, 400);
         viewStage.setScene(scene);
