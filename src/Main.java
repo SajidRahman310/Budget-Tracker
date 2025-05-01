@@ -1,7 +1,8 @@
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -12,9 +13,28 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Budget Tracker");
 
-        Label welcomeLabel = new Label("Welcome to Budget Tracker!");
-        StackPane root = new StackPane();
-        root.getChildren().add(welcomeLabel);
+        //Title
+        Label title = new Label("Welcome to Budget Tracker!");
+        title.setStyle("-fx-font-size: 20px; -fx-font-weight: bold;");
+
+        //Summary label
+        Summary summary = budgetManager.calculateSummary();
+        Label summaryLabel = new Label(
+                 "Total Income: $" + summary.getTotalIncome() +
+                    " | Total Expense: $" + summary.getTotalExpense() +
+                    " | Balance: $" + summary.getBalance()
+        );
+
+        //Buttons
+        Button addEntryButton = new Button("Add Entry");
+        Button viewEntryButton = new Button("View All Entries");
+
+        // TODO: Add action handlers for buttons later
+
+        //Layout
+        VBox root = new VBox(10);
+        root.setStyle("-fx-padding: 20;");
+        root.getChildren().addAll(title, summaryLabel, addEntryButton, viewEntryButton);
 
         Scene scene = new Scene(root, 400, 300);
 
