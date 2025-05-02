@@ -9,9 +9,6 @@
 /dataSources/
 /dataSources.local.xml
 
-
-data/entries.csv
+# Temporary exported file that users generate themselve
+# The autosaved entries.csv could be the main data file that is version controlled
 data/exported_report.csv
-
-src/BudgetManager.java
-src/Summary.java
