@@ -4,6 +4,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.scene.control.TableView;
 
 public class Main extends Application {
 
@@ -31,7 +32,7 @@ public class Main extends Application {
 
         //Buttons
         Button addEntryButton = new Button("Add Entry");
-        addEntryButton.setOnAction(event -> showAddEntryWindow());
+        addEntryButton.setOnAction(event -> showAddEntryWindow(null, null));
         Button viewEntryButton = new Button("View All Entries");
         viewEntryButton.setOnAction(event -> showAllEntriesWindow());
 
@@ -49,7 +50,7 @@ public class Main extends Application {
     }
 
     //add entry route
-    private void showAddEntryWindow() {
+    private void showAddEntryWindow(Entry entryToEdit, TableView<Entry> table) {
         Stage addStage = new Stage();
         addStage.setTitle("Add New Entry");
 
@@ -70,6 +71,15 @@ public class Main extends Application {
         javafx.scene.control.TextField descriptionField = new javafx.scene.control.TextField();
         descriptionField.setPromptText("Description");
 
+
+        if (entryToEdit != null) {
+            amountField.setText(String.valueOf(entryToEdit.getAmount()));
+            typeBox.setValue(entryToEdit.getType());
+            categoryField.setText(entryToEdit.getCategory());
+            datePicker.setValue(entryToEdit.getDate());
+            descriptionField.setText(entryToEdit.getDescription());
+        }
+
         javafx.scene.control.Button saveBtn = new javafx.scene.control.Button("Save");
 
         // Save button action
@@ -85,13 +95,25 @@ public class Main extends Application {
                     throw new IllegalArgumentException("All fields must be filled.");
                 }
 
-                Entry newEntry = new Entry(amount, date, category, description, type);
-                budgetManager.addEntry(newEntry);
+                if (entryToEdit != null) {
+                    entryToEdit.setAmount(amount);
+                    entryToEdit.setType(type);
+                    entryToEdit.setCategory(category);
+                    entryToEdit.setDate(date);
+                    entryToEdit.setDescription(description);
+                } else {
+                    Entry newEntry = new Entry(amount, date, category, description, type);
+                    budgetManager.addEntry(newEntry);
+                }
                 refreshSummary();
                 budgetManager.saveEntries();
+                if (table != null) {
+                    table.getItems().clear();
+                    table.getItems().addAll(budgetManager.getAllEntries());
+                }
                 addStage.close();
             } catch (Exception ex) {
-                System.out.println("Error adding entry: " + ex.getMessage());
+                System.out.println("Error saving entry: " + ex.getMessage());
             }
         });
 
@@ -149,11 +171,15 @@ public class Main extends Application {
         editBtn.setOnAction(e -> {
             Entry selected = table.getSelectionModel().getSelectedItem();
             if (selected != null) {
-                budgetManager.getAllEntries().remove(selected);
-                table.getItems().remove(selected);
+//                budgetManager.getAllEntries().remove(selected);
+//                table.getItems().remove(selected);
+                showAddEntryWindow(selected, table);
                 refreshSummary();
                 budgetManager.saveEntries();
-                showAddEntryWindow(); // Just re-use the Add Entry form for now
+                table.getItems().clear();
+                table.getItems().addAll(budgetManager.getAllEntries());
+//                table.refresh();
+//                showAddEntryWindow(); // Just re-use the Add Entry form for now
             }
         });
 
