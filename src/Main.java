@@ -2,9 +2,12 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.control.TableView;
+
+import java.util.List;
 
 public class Main extends Application {
 
@@ -133,6 +136,48 @@ public class Main extends Application {
 
         javafx.scene.control.TableView<Entry> table = new javafx.scene.control.TableView<>();
 
+        TextField searchField = new TextField();
+        searchField.setPromptText("Search by category or description");
+
+        TextField minAmountField = new TextField();
+        minAmountField.setPromptText("Minimum Amount");
+
+        TextField maxAmountField = new TextField();
+        maxAmountField.setPromptText("Maximum Amount");
+
+        Button filterBtn = new Button("Apply Filter");
+
+        filterBtn.setOnAction(e -> {
+            String keyword = searchField.getText().toLowerCase();
+            String minAmountText = minAmountField.getText();
+            String maxAmountText = maxAmountField.getText();
+
+            double minAmount = 0;
+            double maxAmount = Double.MAX_VALUE;
+
+            try {
+                if (!minAmountText.isEmpty()) minAmount = Double.parseDouble(minAmountText);
+                if (!maxAmountText.isEmpty()) maxAmount = Double.parseDouble(maxAmountText);
+            } catch (NumberFormatException ex) {
+                System.out.println("Invalid amount entered.");
+            }
+
+            final double minAmountFinal = minAmount;
+            final double maxAmountFinal = maxAmount;
+            List<Entry> filtered = budgetManager.getAllEntries().stream().filter(entry -> {
+                boolean matchesKeyword = keyword.isEmpty() ||
+                        entry.getCategory().toLowerCase().contains(keyword) ||
+                        entry.getDescription().toLowerCase().contains(keyword);
+
+                boolean matchesAmount = entry.getAmount() >= minAmountFinal && entry.getAmount() <= maxAmountFinal;
+
+                return matchesKeyword && matchesAmount;
+            }).toList();
+
+            table.getItems().clear();
+            table.getItems().addAll(filtered);
+        });
+
         // Columns
         javafx.scene.control.TableColumn<Entry, Double> amountCol = new javafx.scene.control.TableColumn<>("Amount");
         amountCol.setCellValueFactory(new javafx.scene.control.cell.PropertyValueFactory<>("amount"));
@@ -166,7 +211,7 @@ public class Main extends Application {
             }
         });
 
-        // Edit Button (for simplicity, we'll just delete and let the user re-add)
+        // Edit Button (for simplicity, we'll just delete and let the user re-add) xxx (now it actually edits instead)
         Button editBtn = new Button("Edit Selected Entry");
         editBtn.setOnAction(e -> {
             Entry selected = table.getSelectionModel().getSelectedItem();
@@ -185,7 +230,10 @@ public class Main extends Application {
 
         VBox layout = new VBox(10);
         layout.setStyle("-fx-padding: 20;");
-        layout.getChildren().addAll(table, deleteBtn, editBtn);
+        layout.getChildren().addAll(
+                searchField, minAmountField, maxAmountField, filterBtn,
+                table, deleteBtn, editBtn
+        );
 
         Scene scene = new Scene(layout, 600, 400);
         viewStage.setScene(scene);
