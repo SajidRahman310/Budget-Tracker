@@ -14,6 +14,7 @@ public class Main extends Application {
 
     //home route
     public void start(Stage primaryStage) {
+        budgetManager.loadEntries();
         primaryStage.setTitle("Budget Tracker");
 
         //Title
@@ -87,6 +88,7 @@ public class Main extends Application {
                 Entry newEntry = new Entry(amount, date, category, description, type);
                 budgetManager.addEntry(newEntry);
                 refreshSummary();
+                budgetManager.saveEntries();
                 addStage.close();
             } catch (Exception ex) {
                 System.out.println("Error adding entry: " + ex.getMessage());
@@ -138,6 +140,7 @@ public class Main extends Application {
                 budgetManager.getAllEntries().remove(selected);
                 table.getItems().remove(selected);
                 refreshSummary();
+                budgetManager.saveEntries();
             }
         });
 
@@ -149,6 +152,7 @@ public class Main extends Application {
                 budgetManager.getAllEntries().remove(selected);
                 table.getItems().remove(selected);
                 refreshSummary();
+                budgetManager.saveEntries();
                 showAddEntryWindow(); // Just re-use the Add Entry form for now
             }
         });
