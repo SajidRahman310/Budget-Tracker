@@ -46,8 +46,8 @@ Download JavaFX SDK 21 from https://gluonhq.com/products/javafx/
 | Delete Entry | ✅ Complete |
 | View All Entries | ✅ Complete |
 | Sort Entries (by date, category, amount) | ✅ Complete |
-| Filter Transactions (by name, amount, date) | ❌ Not yet  |
-| Search Entries (by keywords or category) | ❌ Not yet  |
+| Filter Transactions (by name, amount, date) | ✅ Complete  |
+| Search Entries (by keywords or category) | ✅ Complete |
 | Summary View (income vs expenses) | ✅ Complete |
 | Download Reports (export as CSV) | ❌ Not yet  |
 | Data Persistence (save to CSV) | ✅ Complete |
