@@ -7,6 +7,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.control.TableView;
 
+import java.io.File;
+import java.io.PrintWriter;
 import java.util.List;
 
 public class Main extends Application {
@@ -228,11 +230,29 @@ public class Main extends Application {
             }
         });
 
+        Button exportBtn = new Button("Export Report");
+        exportBtn.setOnAction(e -> {
+            try (PrintWriter writer = new PrintWriter(new File("data/exported_report.csv"))) {
+                writer.println("Amount,Date,Category,Description,Type");
+                for (Entry entry : table.getItems()) {
+                    writer.printf("%f,%s,%s,%s,%s\n",
+                            entry.getAmount(),
+                            entry.getDate().toString(),
+                            entry.getCategory(),
+                            entry.getDescription(),
+                            entry.getType());
+                }
+                System.out.println("Report exported successfully.");
+            } catch (Exception ex) {
+                System.out.println("Error exporting report: " + ex.getMessage());
+            }
+        });
+
         VBox layout = new VBox(10);
         layout.setStyle("-fx-padding: 20;");
         layout.getChildren().addAll(
                 searchField, minAmountField, maxAmountField, filterBtn,
-                table, deleteBtn, editBtn
+                table, deleteBtn, editBtn, exportBtn
         );
 
         Scene scene = new Scene(layout, 600, 400);
