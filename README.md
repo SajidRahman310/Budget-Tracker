@@ -37,3 +37,17 @@ Download JavaFX SDK 21 from https://gluonhq.com/products/javafx/
 - Add the JavaFX SDK `lib` folder as a Library in IntelliJ.
 - In Run Configurations, add VM options:
   --module-path /path/to/javafx-sdk-21/lib --add-modules javafx.controls,javafx.fxml
+
+## Features Checklist:
+| Feature | Status     |
+|---------|------------|
+| Add Entry | ✅ Complete |
+| Modify Entry | ✅ Complete |
+| Delete Entry | ✅ Complete |
+| View All Entries | ✅ Complete |
+| Sort Entries (by date, category, amount) | ✅ Complete |
+| Filter Transactions (by name, amount, date) | ❌ Not yet  |
+| Search Entries (by keywords or category) | ❌ Not yet  |
+| Summary View (income vs expenses) | ✅ Complete |
+| Download Reports (export as CSV) | ❌ Not yet  |
+| Data Persistence (save to CSV) | ✅ Complete |
