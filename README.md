@@ -51,7 +51,3 @@ Download JavaFX SDK 21 from https://gluonhq.com/products/javafx/
 | Summary View (income vs expenses) | ✅ Complete |
 | Download Reports (export as CSV) | ✅ Complete  |
 | Data Persistence (save to CSV) | ✅ Complete |
-
-## Left ToDo:
-- Shamaamah implement BudgetManager.java
-- Shamaamah implement Summary.java
