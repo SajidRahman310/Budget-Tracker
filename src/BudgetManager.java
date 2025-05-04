@@ -78,4 +78,40 @@ public class BudgetManager {
             System.out.println("Error writing report: " + e.getMessage());
         }
     }
+
+    public void saveEntries() {
+        try (PrintWriter writer = new PrintWriter(new File("data/entries.csv"))) {
+            writer.println("Amount,Date,Category,Description,Type");
+            for (Entry e : entries) {
+                writer.printf("%f,%s,%s,%s,%s\n",
+                        e.getAmount(),
+                        e.getDate().toString(),
+                        e.getCategory(),
+                        e.getDescription(),
+                        e.getType());
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Error saving entries: " + e.getMessage());
+        }
+    }
+
+    public void loadEntries() {
+        File file = new File("data/entries.csv");
+        if (!file.exists()) return;
+
+        try (Scanner scanner = new Scanner(file)) {
+            if (scanner.hasNextLine()) scanner.nextLine();
+            while (scanner.hasNextLine()) {
+                String[] data = scanner.nextLine().split(",");
+                double amount = Double.parseDouble(data[0]);
+                LocalDate date = LocalDate.parse(data[1]);
+                String category = data[2];
+                String description = data[3];
+                String type = data[4];
+                entries.add(new Entry(amount, date, category, description, type));
+            }
+        } catch (Exception e) {
+            System.out.println("Error loading entries: " + e.getMessage());
+        }
+    }
 }

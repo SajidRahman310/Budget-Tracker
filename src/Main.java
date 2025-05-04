@@ -41,7 +41,6 @@ public class Main extends Application {
         Button viewEntryButton = new Button("View All Entries");
         viewEntryButton.setOnAction(event -> showAllEntriesWindow());
 
-        // TODO: Add action handlers for buttons later
 
         //Layout
         VBox root = new VBox(10);
