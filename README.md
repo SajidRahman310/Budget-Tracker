@@ -30,13 +30,24 @@ reopen the application.
 ### Java Version
 Java 21
 
-### JavaFX
-Download JavaFX SDK 21 from https://gluonhq.com/products/javafx/
-
 ### Setup
-- Add the JavaFX SDK `lib` folder as a Library in IntelliJ.
-- In Run Configurations, add VM options:
+#### Option 1 (Manual Download):
+1) Download JavaFX SDK 21 from https://gluonhq.com/products/javafx/
+2) Add the JavaFX SDK `lib` folder as a Library in IntelliJ.
+3) In Run Configurations, add VM options:
   --module-path /path/to/javafx-sdk-21/lib --add-modules javafx.controls,javafx.fxml
+#### Option 2 (Preferred MAVEN):
+1) Make sure Maven is installed, run ```mvn -v``` to check 
+2) If Maven not installed run ```brew --version``` to check if homebrew is installed
+3) If Homebrew is not installed:
+   1) Run this to install Homebrew:
+       ```/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"```
+   2) Run this to install Maven:
+     ```brew install maven```
+   3) Check if successful with ```mvn -v```
+4) Navigate to project directory
+5) Compile project with ```mvn compile```
+6) After compilation run project ```mvn javafx:run```
 
 ## Features Checklist:
 | Feature | Status     |
